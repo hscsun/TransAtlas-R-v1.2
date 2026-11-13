@@ -1,0 +1,7 @@
+sample_id,condition,replicate
+CON-1,Control,1
+CON-2,Control,2
+CON-3,Control,3
+FBS-1,FBS,1
+FBS-2,FBS,2
+FBS-3,FBS,3

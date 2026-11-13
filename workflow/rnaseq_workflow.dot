@@ -1,0 +1,39 @@
+# Workflow diagram for the RNA-seq manuscript and analysis README.
+# Render with Graphviz: dot -Tpng workflow/rnaseq_workflow.dot -o workflow/rnaseq_workflow.png
+
+digraph rnaseq_workflow {
+  graph [rankdir=LR, bgcolor="white", pad=0.25, nodesep=0.35, ranksep=0.55,
+         fontname="Arial", fontsize=10, label="Publication-oriented bulk RNA-seq workflow", labelloc=t];
+  node [shape=box, style="rounded,filled", fillcolor="#F4F7FB", color="#40566F",
+        fontname="Arial", fontsize=9, margin="0.12,0.08"];
+  edge [color="#40566F", arrowsize=0.7, penwidth=1.1];
+
+  input [label="Raw integer count matrix\n+ sample metadata\n+ species configuration", fillcolor="#E6F3F5"];
+  audit [label="Input validation\nID checks • duplicate handling\nlow-count filtering • provenance"];
+  qc [label="Sample QC\nlibrary size • count distribution\nPCA • correlation • distance"];
+  de [label="DESeq2 inference\nsize factors • dispersions\nNB GLM • BH-adjusted P values"];
+  shrink [label="Effect-size stabilization\napeglm LFC shrinkage\nwhen available"];
+  s1 [label="S1 screening\nDEG tables across LFC thresholds\nvolcano + expression-effect plots"];
+  enrich [label="Functional analysis\nGO BP/MF/CC • KEGG\nranked GSEA • MSigDB Hallmark"];
+  heatmap [label="Expression visualization\nVST heatmaps • annotations\nselected functional gene sets"];
+  tf [label="TF module\nTF-target filtering\npolarity summary • network graph"];
+  pathview [label="Optional pathway maps\nKEGG pathview\nspecies-matched"];
+  report [label="Reproducible outputs\nCSV tables • figures • manifest\nHTML report • manuscript draft"];
+  validate [label="Publication review\nbiological validation\naccession + code deposition", fillcolor="#FFF4D6"];
+
+  input -> audit -> qc -> de -> shrink;
+  de -> s1;
+  shrink -> s1;
+  de -> enrich;
+  shrink -> enrich;
+  de -> heatmap;
+  de -> tf;
+  enrich -> pathview;
+  qc -> report;
+  s1 -> report;
+  enrich -> report;
+  heatmap -> report;
+  tf -> report;
+  pathview -> report;
+  report -> validate;
+}
