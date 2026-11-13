@@ -414,30 +414,6 @@ The supplied workbook begins at gene-level counts. For a complete raw-read workf
 
 Before submission, add raw-read accession numbers, source data, a stable code repository, biological validation, and a fully reviewed statistical design. The English manuscript template is in [manuscript/manuscript_draft.Rmd](manuscript/manuscript_draft.Rmd).
 
-## Reproducing the paper
-
-The repository contains everything needed to rebuild the case-study paper from
-the released inputs:
-
-```bash
-# 1. the analysis (eleven sections, figure atlas, Word report)
-Rscript pipeline/run_analysis.R --counts input/NIH3T3.xlsx \
-        --samples input/NIH3T3_metadata.csv --species mouse \
-        --contrast FBS,Control
-
-# 2. the tables, taken directly from results/NIH3T3/
-python3 work/make_paper_tables.py --results results/NIH3T3
-
-# 3. the composite figures, the Word build and the PDF build
-python3 work/build_word_figures.py
-python3 work/make_docx_md.py && python3 work/postprocess_word.py
-python3 work/build_manuscript_pdf.py
-```
-
-`work/` holds those build scripts and their own [README](work/README.md); the
-analysis itself never calls them. Every table in the paper is regenerated from
-the result tables of the run between the `<!--TABLE:n-->` markers, and Table 8
-is a literature comparison that is maintained by hand.
 
 ## Citation
 
